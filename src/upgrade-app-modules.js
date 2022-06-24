@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const packageJson = require('../package.json');
 const {exec} = require('child_process');
+const packageJson = require('./read-package-json');
 
 const MODULES_PREFFIX = 'example-super-app';
 

@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const fetch = require('node-fetch');
 const chokidar = require('chokidar');
+const packageJson = require('./read-package-json');
 
 class SyncError extends Error {
   constructor(message) {
@@ -16,15 +17,6 @@ const FATAL_ERROR = new SyncError(
 );
 
 const modulePath = process.cwd();
-const packageJsonPath = path.resolve(modulePath, 'package.json');
-
-if (!fs.existsSync(packageJsonPath)) {
-  throw new SyncError(
-    'Certifique-se de executar o comando "yarn sync-with-core" na raiz do projeto.',
-  );
-}
-
-const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, { encoding: 'utf-8' }))
 
 function ensureDirectoryExistence(dirPath) {
   const dirname = path.dirname(dirPath);
