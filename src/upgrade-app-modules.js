@@ -1,19 +1,24 @@
 #!/usr/bin/env node
 
-const {exec} = require('child_process');
+const { exec } = require('child_process');
 const packageJson = require('./read-package-json');
 
 const MODULES_PREFFIX = 'example-super-app';
 
-const modulesToUpdate = Object.keys(packageJson.dependencies)
-  .filter(packageName => packageName.startsWith(MODULES_PREFFIX))
-  .map(packageName => {
-    const packageVersion = packageJson.dependencies[packageName];
-    return packageName + '@' + packageVersion;
-  })
-  .join(' ');
+function getDependenciesList(dependencies) {
+  return Object.keys(dependencies)
+    .filter(packageName => packageName.startsWith(MODULES_PREFFIX))
+    .map(packageName => {
+      const packageVersion = dependencies[packageName];
+      return packageName + '@' + packageVersion;
+    })
+    .join(' ')
+}
 
-const command = 'yarn upgrade ' + modulesToUpdate;
+const modulesToUpdate = getDependenciesList(packageJson.dependencies);
+const devModulesToUpdate = getDependenciesList(packageJson.devDependencies);
+
+const command = 'yarn upgrade ' + modulesToUpdate + ' ' + devModulesToUpdate;
 
 console.log('running:', command);
 
