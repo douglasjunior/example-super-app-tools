@@ -4,7 +4,6 @@ const fs = require('fs');
 const path = require('path');
 const fetch = require('node-fetch');
 const chokidar = require('chokidar');
-const packageJson = require('../package.json');
 
 class SyncError extends Error {
   constructor(message) {
@@ -16,30 +15,30 @@ const FATAL_ERROR = new SyncError(
   'Não foi possível conectar, certifique-se de que o metro está em execução no "core" e escutando na porta 8081.',
 );
 
+const modulePath = process.cwd();
+const packageJsonPath = path.resolve(modulePath, 'package.json');
+
+if (!fs.existsSync(packageJsonPath)) {
+  throw new SyncError(
+    'Certifique-se de executar o comando "yarn sync-with-core" na raiz do projeto.',
+  );
+}
+
+const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, { encoding: 'utf-8' }))
+
 function ensureDirectoryExistence(dirPath) {
   const dirname = path.dirname(dirPath);
   if (!fs.existsSync(dirname)) {
-    fs.mkdirSync(dirname, {recursive: true});
-  }
-}
-
-function validateProcessDirectory(processDir) {
-  if (!fs.existsSync(path.resolve(processDir, 'package.json'))) {
-    throw new SyncError(
-      'Certifique-se de executar o comando "yarn sync-with-core" na raiz do projeto.',
-    );
+    fs.mkdirSync(dirname, { recursive: true });
   }
 }
 
 function startSync(corePath) {
-  const modulePath = process.cwd();
   const linkedModulePath = path.resolve(
     corePath,
     'node_modules',
     packageJson.name,
   );
-
-  validateProcessDirectory(modulePath);
 
   function getLinkedFilePath(originalPath) {
     return originalPath.replace(modulePath, linkedModulePath);
@@ -85,9 +84,9 @@ async function syncWithCore() {
   try {
     const response = await fetch(
       'http://localhost:8081/sync-local-module?' +
-        new URLSearchParams({
-          name: packageJson.name,
-        }),
+      new URLSearchParams({
+        name: packageJson.name,
+      }),
     );
 
     if (response.status === 404) {
