@@ -7,7 +7,7 @@
     "upgrade-app-modules": "./src/upgrade-app-modules.js"
   },
   "dependencies": {
-    "chokidar": "^3.5.3",
-    "node-fetch": "^2.6.7"
+    "chokidar": "3.5.3",
+    "node-fetch": "2.6.7"
   }
 }
