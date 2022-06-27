@@ -6,7 +6,7 @@ const packageJsonPath = path.resolve(modulePath, 'package.json');
 
 if (!fs.existsSync(packageJsonPath)) {
   throw new Error(
-    'Certifique-se de executar o comando "yarn sync-with-core" na raiz do projeto.',
+    'Certifique-se de executar este comando na raiz do projeto.',
   );
 }
 
