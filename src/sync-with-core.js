@@ -25,6 +25,10 @@ function ensureDirectoryExistence(dirPath) {
   }
 }
 
+function resumeFilePath(filePath) {
+  return filePath.replace(modulePath, '');
+}
+
 function startSync(corePath) {
   const linkedModulePath = path.resolve(
     corePath,
@@ -59,15 +63,15 @@ function startSync(corePath) {
 
   watcher
     .on('add', originalPath => {
-      console.log('\x1b[34m', `Added file: ${originalPath}`, '\x1b[0m');
+      console.log('\x1b[34m', `Added file: ${resumeFilePath(originalPath)}`, '\x1b[0m');
       copyAddedOrChangedFile(originalPath);
     })
     .on('change', originalPath => {
-      console.log('\x1b[32m', `Changed file: ${originalPath}`, '\x1b[0m');
+      console.log('\x1b[32m', `Changed file: ${resumeFilePath(originalPath)}`, '\x1b[0m');
       copyAddedOrChangedFile(originalPath);
     })
     .on('unlink', originalPath => {
-      console.log('\x1b[35m', `Removed file: ${originalPath}`, '\x1b[0m');
+      console.log('\x1b[35m', `Removed file: ${resumeFilePath(originalPath)}`, '\x1b[0m');
       unlinkDeletedFile(originalPath);
     });
 }
