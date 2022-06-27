@@ -15,18 +15,27 @@ function getDependenciesList(dependencies) {
     .join(' ')
 }
 
-const modulesToUpdate = getDependenciesList(packageJson.dependencies);
-const devModulesToUpdate = getDependenciesList(packageJson.devDependencies);
+function updateAppModules() {
+  const modulesToUpdate = getDependenciesList(packageJson.dependencies);
+  const devModulesToUpdate = getDependenciesList(packageJson.devDependencies);
 
-const command = 'yarn upgrade ' + modulesToUpdate + ' ' + devModulesToUpdate + ' && yarn install';
+  if (!modulesToUpdate.length && !devModulesToUpdate.length) {
+    console.warn('No modules were found to update.')
+    return process.exit(0);
+  }
 
-console.log('running:', command);
+  const command = 'yarn upgrade ' + modulesToUpdate + ' ' + devModulesToUpdate + ' && yarn install';
 
-const yarnProcess = exec(command);
+  console.log('Running:', command);
 
-yarnProcess.stdout.pipe(process.stdout);
-yarnProcess.stderr.pipe(process.stdout);
+  const yarnProcess = exec(command);
 
-yarnProcess.on('exit', function (code) {
-  process.exit(code);
-});
+  yarnProcess.stdout.pipe(process.stdout);
+  yarnProcess.stderr.pipe(process.stdout);
+
+  yarnProcess.on('exit', function (code) {
+    process.exit(code);
+  });
+}
+
+updateAppModules();
