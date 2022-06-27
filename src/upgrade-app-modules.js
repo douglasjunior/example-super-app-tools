@@ -18,7 +18,7 @@ function getDependenciesList(dependencies) {
 const modulesToUpdate = getDependenciesList(packageJson.dependencies);
 const devModulesToUpdate = getDependenciesList(packageJson.devDependencies);
 
-const command = 'yarn upgrade ' + modulesToUpdate + ' ' + devModulesToUpdate;
+const command = 'yarn upgrade ' + modulesToUpdate + ' ' + devModulesToUpdate + ' && yarn install';
 
 console.log('running:', command);
 
