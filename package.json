@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "bin": {
-    "sync-with-core": "./src/sync-with-core.js",
-    "upgrade-app-modules": "./src/upgrade-app-modules.js"
+    "sync-with-core": "./lib/sync-with-core.js",
+    "upgrade-app-modules": "./lib/upgrade-app-modules.js"
   },
   "dependencies": {
     "chokidar": "3.5.3",
