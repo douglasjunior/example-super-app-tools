@@ -4,7 +4,8 @@
   "private": true,
   "bin": {
     "sync-with-core": "./lib/sync-with-core.js",
-    "upgrade-app-modules": "./lib/upgrade-app-modules.js"
+    "upgrade-app-modules": "./lib/upgrade-app-modules.js",
+    "validate-dependencies": "./lib/validate-dependencies.js"
   },
   "dependencies": {
     "chokidar": "3.5.3",
